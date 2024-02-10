@@ -8,7 +8,7 @@ Usage :
 Output : 
 
 ```
-chr	start	end	value1
+chr	start	end	cov
 chr1	1	50	30
 chr1	51	60	40
 chr1	61	100	27
