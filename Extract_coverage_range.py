@@ -46,7 +46,7 @@ for chr_name, group in coverage_df.groupby('chr'):
     for row in group.itertuples(index=False):
         # If this is the start of a new range or depth changes, save the previous range
         if start_pos is not None and (prev_depth != row.depth or row.pos != prev_pos + 1):
-            rows_list.append({'chr': chr_name, 'start': start_pos, 'end': prev_pos, 'value1': prev_depth})
+            rows_list.append({'chr': chr_name, 'start': start_pos, 'end': prev_pos, 'cov': prev_depth})
             start_pos = row.pos
         # If this is the start of a new contiguous range, update start_pos
         if start_pos is None:
@@ -55,7 +55,7 @@ for chr_name, group in coverage_df.groupby('chr'):
         prev_depth = row.depth
     # Save the last range for this chromosome/scaffold
     if start_pos is not None:
-        rows_list.append({'chr': chr_name, 'start': start_pos, 'end': prev_pos, 'value1': prev_depth})
+        rows_list.append({'chr': chr_name, 'start': start_pos, 'end': prev_pos, 'cov': prev_depth})
 
 # Create DataFrame from the accumulated rows
 result_df = pd.DataFrame(rows_list)
@@ -63,7 +63,7 @@ result_df = pd.DataFrame(rows_list)
 # Optional: Convert columns to appropriate data types
 result_df['start'] = result_df['start'].astype(int)
 result_df['end'] = result_df['end'].astype(int)
-result_df['value1'] = result_df['value1'].astype(int)
+result_df['cov'] = result_df[cov'].astype(int)
 
 # Check when end > start
 result_df = result_df[result_df['end'] > result_df['start']]
